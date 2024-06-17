@@ -1,6 +1,10 @@
+"use client";
 import React from "react";
-import ThreeDCardDemo from "./ui/3dcardcard";
-import { MemoizedStars } from "./ui/stars";
+import dynamic from 'next/dynamic';
+
+// Dynamically import components
+const MemoizedStars = dynamic(() => import("./ui/stars").then(mod => mod.MemoizedStars), { ssr: false });
+const ThreeDCardDemo = dynamic(() => import("./ui/3dcardcard").then(mod => mod.default), { ssr: false });
 
 const Project = () => {
   const cardDataArray = [

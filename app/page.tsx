@@ -1,24 +1,26 @@
-// page.tsx
+"use client";
+import React from "react";
+import dynamic from "next/dynamic";
 
-import NavbarDemo from "@/components/Navbar";
-import { TextGenerateEffectDemo } from "@/components/About"; // Ensure correct import path
-import SparklesPreview from "@/components/Hero";
-import Skills from "@/components/Skills";
-import Project from "@/components/Project";
-import Contact from "@/components/Contact";
-import { MemoizedStars } from "@/components/ui/stars";
+// Dynamically import components
+const NavbarDemo = dynamic(() => import("../components/Navbar"), { ssr: false });
+const TextGenerateEffectDemo = dynamic(() => import("../components/About").then(mod => mod.TextGenerateEffectDemo), { ssr: false });
+const SparklesPreview = dynamic(() => import("../components/Hero"), { ssr: false });
+const Skills = dynamic(() => import("../components/Skills"), { ssr: false });
+const Project = dynamic(() => import("../components/Project"), { ssr: false });
+const Contact = dynamic(() => import("../components/Contact"), { ssr: false });
+const MemoizedStars = dynamic(() => import("../components/ui/stars").then(mod => mod.MemoizedStars), { ssr: false });
 
 export default function Home() {
   return (
     <div className="bg-[#003153] font-mono">
       <NavbarDemo />
-      
       <SparklesPreview />
       <MemoizedStars />
       <TextGenerateEffectDemo />
       <Skills />
       <Project />
-      <Contact/>
+      <Contact />
     </div>
   );
 }

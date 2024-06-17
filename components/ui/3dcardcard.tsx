@@ -1,7 +1,12 @@
 import Image from "next/image";
 import React from "react";
-import { CardBody, CardContainer, CardItem } from "../ui/3d-card";
+import dynamic from "next/dynamic";
 import Link from "next/link";
+
+// Dynamically import components
+const CardContainer = dynamic(() => import("../ui/3d-card").then(mod => mod.CardContainer), { ssr: false });
+const CardBody = dynamic(() => import("../ui/3d-card").then(mod => mod.CardBody), { ssr: false });
+const CardItem = dynamic(() => import("../ui/3d-card").then(mod => mod.CardItem), { ssr: false });
 
 interface ThreeDCardDemoProps {
   title: string;

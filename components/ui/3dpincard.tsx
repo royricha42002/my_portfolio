@@ -1,15 +1,20 @@
+"use client";
 import React from "react";
-import { PinContainer } from "../ui/3d-pin";
+import dynamic from 'next/dynamic';
+
+// Dynamically import components
+const PinContainer = dynamic(() => import("../ui/3d-pin").then(mod => mod.PinContainer), { ssr: false });
+const Image = dynamic(() => import("next/image"), { ssr: false });
 
 const skills = [
-  { name: 'Java', image: '/java.png', href: '/java' },
-  { name: 'React.js', image: '/react.png', href: '/react' },
-  { name: 'Next.js', image: '/nextjs.png', href: '/next' },
-  { name: 'Tailwind CSS', image: '/tailwind.png', href: '/node' },
-  { name: 'Node.js', image: '/node.png', href: '/node' },
-  { name: 'MongoDB', image: '/mongo.png', href: '/mongodb' },
-  { name: 'MySQL', image: '/mysql.png', href: '/mysql' },
-  { name: 'Prompt Engineering', image: '/prompt.png', href: '/prompt-engineering' },
+  { name: 'Java', image: '/java.png', href: 'https://www.java.com/en/' },
+  { name: 'React.js', image: '/react.png', href: 'https://react.dev/' },
+  { name: 'Next.js', image: '/nextjs.png', href: 'https://nextjs.org/' },
+  { name: 'Tailwind CSS', image: '/tailwind.png', href: 'https://tailwindcss.com/' },
+  { name: 'Node.js', image: '/node.png', href: 'https://nodejs.org/en' },
+  { name: 'MongoDB', image: '/mongo.png', href: 'https://www.mongodb.com/' },
+  { name: 'MySQL', image: '/mysql.png', href: 'https://www.mysql.com/' },
+  { name: 'Prompt Engineering', image: '/prompt.png', href: 'https://en.wikipedia.org/wiki/Prompt_engineering' },
 ];
 
 export function AnimatedPinDemo() {
@@ -26,7 +31,7 @@ export function AnimatedPinDemo() {
               {skill.name}
             </h3>
             <div className="flex flex-1 w-full rounded-lg bg-gradient-to-br from-violet-500 via-purple-500 to-blue-500 items-center justify-center">
-              <img src={skill.image} alt={skill.name} className="w-14 h-14" />
+              <Image src={skill.image} alt={skill.name} className="w-14 h-14" />
             </div>
           </div>
         </PinContainer>
@@ -34,3 +39,5 @@ export function AnimatedPinDemo() {
     </div>
   );
 }
+
+export default AnimatedPinDemo;

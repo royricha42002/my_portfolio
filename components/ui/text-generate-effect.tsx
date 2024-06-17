@@ -1,54 +1,26 @@
-"use client";
-import { useEffect } from "react";
-import { motion, stagger, useAnimate } from "framer-motion";
-import { cn } from "@/utils/cn";
+// text-generate-effect.tsx
+"use client"
+import React from "react";
+import { motion } from "framer-motion"; // Adjust imports as needed
 
-export const TextGenerateEffect = ({
-  words,
-  className,
-}: {
-  words: string;
-  className?: string;
-}) => {
-  const [scope, animate] = useAnimate();
-  let wordsArray = words.split(" ");
-  useEffect(() => {
-    animate(
-      "span",
-      {
-        opacity: 1,
-      },
-      {
-        duration: 2,
-        delay: stagger(0.2),
-      }
-    );
-  }, [scope.current]);
-
-  const renderWords = () => {
-    return (
-      <motion.div ref={scope}>
-        {wordsArray.map((word, idx) => {
-          return (
-            <motion.span
-              key={word + idx}
-              className=" text-black opacity-0"
-            >
-              {word}{" "}
-            </motion.span>
-          );
-        })}
-      </motion.div>
-    );
-  };
+const TextGenerateEffect = ({ words }: { words: string }) => {
+  const wordsArray = words.split(" ");
 
   return (
-    <div className={cn("font-bold", className)}>
-      <div className="mt-4">
-        <div className="  text-black text-xl font-semibold leading-snug tracking-wide">
-          {renderWords()}
-        </div>
-      </div>
+    <div className="text-white">
+      {wordsArray.map((word, idx) => (
+        <motion.span
+          key={word + idx}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, delay: idx * 0.2 }}
+          className="opacity-0"
+        >
+          {word}{" "}
+        </motion.span>
+      ))}
     </div>
   );
 };
+
+export default TextGenerateEffect; // Export as default

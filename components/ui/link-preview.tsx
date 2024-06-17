@@ -1,14 +1,9 @@
-"use client";
+// link-preview.tsx
 import * as HoverCardPrimitive from "@radix-ui/react-hover-card";
 import Image from "next/image";
 import { encode } from "qss";
-import React from "react";
-import {
-  AnimatePresence,
-  motion,
-  useMotionValue,
-  useSpring,
-} from "framer-motion";
+import React, { useEffect, useState } from "react";
+import { AnimatePresence, motion, useMotionValue, useSpring } from "framer-motion";
 import Link from "next/link";
 import { cn } from "@/utils/cn";
 
@@ -19,12 +14,12 @@ type LinkPreviewProps = {
   width?: number;
   height?: number;
   quality?: number;
-  layout?: string;
+  layout?: "fixed" | "intrinsic" | "responsive";
   isStatic?: boolean;
   imageSrc?: string;
 };
 
-export const LinkPreview = ({
+const LinkPreview = ({
   children,
   url,
   className,
@@ -35,8 +30,25 @@ export const LinkPreview = ({
   isStatic = false,
   imageSrc = "",
 }: LinkPreviewProps) => {
-  const isMailto = url.startsWith('mailto:');
-  let src;
+  const isMailto = url.startsWith("mailto:");
+  let src: string | undefined;
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  const [isOpen, setOpen] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+  const x = useMotionValue(0);
+  const translateX = useSpring(x, { stiffness: 100, damping: 15 });
+
+  const handleMouseMove = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    const targetRect = event.currentTarget.getBoundingClientRect();
+    const eventOffsetX = event.clientX - targetRect.left;
+    const offsetFromCenter = (eventOffsetX - targetRect.width / 2) / 2; // Reduce the effect to make it subtle
+    x.set(offsetFromCenter);
+  };
+
   if (!isStatic && !isMailto) {
     const params = encode({
       url,
@@ -54,27 +66,9 @@ export const LinkPreview = ({
     src = imageSrc;
   }
 
-  const [isOpen, setOpen] = React.useState(false);
-  const [isMounted, setIsMounted] = React.useState(false);
-
-  React.useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  const springConfig = { stiffness: 100, damping: 15 };
-  const x = useMotionValue(0);
-  const translateX = useSpring(x, springConfig);
-
-  const handleMouseMove = (event: any) => {
-    const targetRect = event.target.getBoundingClientRect();
-    const eventOffsetX = event.clientX - targetRect.left;
-    const offsetFromCenter = (eventOffsetX - targetRect.width / 2) / 2; // Reduce the effect to make it subtle
-    x.set(offsetFromCenter);
-  };
-
   return (
     <>
-      {isMounted && !isMailto ? (
+      {isMounted && !isMailto && src && (
         <div className="hidden">
           <Image
             src={src}
@@ -86,14 +80,12 @@ export const LinkPreview = ({
             alt="hidden image"
           />
         </div>
-      ) : null}
+      )}
 
       <HoverCardPrimitive.Root
         openDelay={50}
         closeDelay={100}
-        onOpenChange={(open) => {
-          setOpen(open);
-        }}
+        onOpenChange={(open) => setOpen(open)}
       >
         <HoverCardPrimitive.Trigger
           onMouseMove={handleMouseMove}
@@ -106,7 +98,7 @@ export const LinkPreview = ({
 
         {!isMailto && (
           <HoverCardPrimitive.Content
-            className="[transform-origin:var(--radix-hover-card-content-transform-origin)]"
+            className="transform-origin-var(--radix-hover-card-content-transform-origin)"
             side="top"
             align="center"
             sideOffset={10}
@@ -115,21 +107,10 @@ export const LinkPreview = ({
               {isOpen && (
                 <motion.div
                   initial={{ opacity: 0, y: 20, scale: 0.6 }}
-                  animate={{
-                    opacity: 1,
-                    y: 0,
-                    scale: 1,
-                    transition: {
-                      type: "spring",
-                      stiffness: 260,
-                      damping: 20,
-                    },
-                  }}
+                  animate={{ opacity: 1, y: 0, scale: 1, transition: { type: "spring", stiffness: 260, damping: 20 } }}
                   exit={{ opacity: 0, y: 20, scale: 0.6 }}
                   className="shadow-xl rounded-xl"
-                  style={{
-                    x: translateX,
-                  }}
+                  style={{ x: translateX }}
                 >
                   <Link
                     href={url}
@@ -137,16 +118,18 @@ export const LinkPreview = ({
                     style={{ fontSize: 0 }}
                     target="_blank" // Add target="_blank" to open link in new tab
                   >
-                    <Image
-                      src={isStatic ? imageSrc : src}
-                      width={width}
-                      height={height}
-                      quality={quality}
-                      layout={layout}
-                      priority={true}
-                      className="rounded-lg"
-                      alt="preview image"
-                    />
+                    {src && (
+                      <Image
+                        src={src}
+                        width={width}
+                        height={height}
+                        quality={quality}
+                        layout={layout}
+                        priority={true}
+                        className="rounded-lg"
+                        alt="preview image"
+                      />
+                    )}
                   </Link>
                 </motion.div>
               )}
@@ -157,3 +140,5 @@ export const LinkPreview = ({
     </>
   );
 };
+
+export default LinkPreview;

@@ -1,7 +1,11 @@
 "use client";
 import React from "react";
-import { LinkPreview } from "@/components/ui/link-preview"; // Ensure this path is correct
-import { MemoizedStars } from "./ui/stars";
+import dynamic from 'next/dynamic';
+import Image from 'next/image';
+
+// Dynamically import components
+const LinkPreview = dynamic(() => import("./ui/link-preview").then(mod => mod.default), { ssr: false });
+const MemoizedStars = dynamic(() => import("./ui/stars").then(mod => mod.MemoizedStars), { ssr: false });
 
 const Contact = () => {
     return (
@@ -12,20 +16,20 @@ const Contact = () => {
             </div>
             <MemoizedStars />
             <div className="text-2xl font-medium text-center text-cyan-200 mb-8">
-                Got an idea? Let's make magic happen!
+                Got an idea? Let&apos;s make magic happen!
             </div>
             <div className="text-white flex flex-row justify-center space-x-8 mx-10 my-4">
                 <LinkPreview url="https://github.com/royricha42002" className="font-bold">
-                    <img src="/github.png" className="h-12" />
+                    <Image src="/github.png" className="h-12"  alt="github img" />
                 </LinkPreview>
                 <LinkPreview url="https://www.linkedin.com/in/richaroy42002/" className="font-bold">
-                    <img src="/linkedin.png" className="h-12" />
+                    <Image src="/linkedin.png" className="h-12" alt="linkedin img"  />
                 </LinkPreview>
                 <LinkPreview url="mailto:your-email@example.com" className="font-bold">
-                    <img src="/mail.png" className="h-12" />
+                    <Image src="/mail.png" className="h-12" alt="mail img"  />
                 </LinkPreview>
                 <LinkPreview url="https://www.instagram.com/richaroy.in?igsh=anE0OGZyamZtYWx3" className="font-bold">
-                    <img src="/insta.png" className="h-12" />
+                    <Image src="/insta.jpg" className="h-12" alt="insta img"  />
                 </LinkPreview>
             </div>
             <MemoizedStars />

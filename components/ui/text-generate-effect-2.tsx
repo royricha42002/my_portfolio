@@ -1,11 +1,10 @@
 // text-generate-effect-2.tsx
-
-"use client";
+"use client"
 import { useEffect } from "react";
 import { motion, stagger, useAnimate } from "framer-motion";
 import { cn } from "@/utils/cn";
 
-export const TextGenerateEffect2 = ({
+const TextGenerateEffect2 = ({
   words,
   className,
 }: {
@@ -13,8 +12,6 @@ export const TextGenerateEffect2 = ({
   className?: string;
 }) => {
   const [scope, animate] = useAnimate();
-
-  // Splitting words into an array
   const wordsArray = words.split(" ");
 
   useEffect(() => {
@@ -28,7 +25,8 @@ export const TextGenerateEffect2 = ({
         delay: stagger(0.2),
       }
     );
-  }, [scope.current]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [animate]);
 
   const renderWords = () => {
     return (
@@ -58,3 +56,5 @@ export const TextGenerateEffect2 = ({
     </div>
   );
 };
+
+export default TextGenerateEffect2;

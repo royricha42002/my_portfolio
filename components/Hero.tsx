@@ -1,9 +1,12 @@
 "use client";
 import React from "react";
-import { SparklesCore } from "../components/ui/sparkles"; // Correct path to SparklesCore
-import MagicButton from "./ui/MagicButton";
-import { BackgroundGradient } from "../components/ui/background-gradient";
+import dynamic from 'next/dynamic';
 import Image from "next/image";
+
+// Dynamically import components
+const SparklesCore = dynamic(() => import("../components/ui/sparkles").then(mod => mod.SparklesCore), { ssr: false });
+const MagicButton = dynamic(() => import("./ui/MagicButton"), { ssr: false });
+const BackgroundGradient = dynamic(() => import("../components/ui/background-gradient").then(mod => mod.BackgroundGradient), { ssr: false });
 
 export function SparklesPreview() {
   return (
@@ -42,13 +45,10 @@ export function SparklesPreview() {
         </div>
       </div>
       <div className="hidden lg:block mx-36 ">
-      <BackgroundGradient className="rounded-full max-w-sm hidden lg:block  bg-transparent ">
-        
-          <img src="/pp.png" className=" h-full" />
-        
-      </BackgroundGradient>
+        <BackgroundGradient className="rounded-full max-w-sm hidden lg:block  bg-transparent ">
+          <Image src="/pp.png" className=" h-full" alt="profile img"/>
+        </BackgroundGradient>
       </div>
-      
     </div>
   );
 }
