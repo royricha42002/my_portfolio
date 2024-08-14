@@ -20,14 +20,14 @@ const Project = () => {
       description:
         "A fully responsive restaurant website FOODERS, made using the MERN stack. The site includes a home page, a menu page displaying available dishes, a success page confirming order placements, and a 404 page for invalid routes. Additionally, it features form validation for reservation submissions to ensure proper data entry.",
       imageUrl: "/fooders.png",
-      linkUrl: "https://github.com/royricha42002/FOODERS",
+      linkUrl: "https://fooders-restaurant.onrender.com/",
     },
     {
       title: "NOTESWORLD",
       description:
         "NotesApp is a full-stack application for creating and managing notes, featuring user authentication and personalized note management. Built with React, Node.js, Express, and MongoDB, it provides a responsive and user-friendly interface for seamless note-taking.",
-      imageUrl: "/notesworld.png", // Ensure this path is correct
-      linkUrl: "https://github.com/royricha42002/NotesApp", // Ensure this URL is correct
+      imageUrl: "/notesworld.png", 
+      linkUrl: "https://notesapp-frontend-e0a1.onrender.com/",
     },
   ];
 
